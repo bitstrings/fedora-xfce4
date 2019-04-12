@@ -1,0 +1,36 @@
+From 2b03d8ed2f33e125d08908ff6122db542fba773f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20Gajd=C5=AF=C5=A1ek?= <gajdusek.petr@centrum.cz>
+Date: Sun, 14 Oct 2012 07:49:28 +0200
+Subject: [PATCH] Actions: Fix panel autohide broken by the actions menu (bug
+ #8960)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Check the button toggle status in actions_plugin_menu() and avoid to popup
+the menu if the button is not pressed.
+
+Signed-off-by: Petr Gajdůšek <gajdusek.petr@centrum.cz>
+---
+ plugins/actions/actions.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/plugins/actions/actions.c b/plugins/actions/actions.c
+index 53ff8d0..7e24806 100644
+--- a/plugins/actions/actions.c
++++ b/plugins/actions/actions.c
+@@ -1248,6 +1248,11 @@ actions_plugin_menu (GtkWidget     *button,
+ 
+   panel_return_if_fail (XFCE_IS_ACTIONS_PLUGIN (plugin));
+ 
++  // do not popup the menu if the button is being toggled off
++  if (button != NULL
++      && !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)))
++    return;
++
+   if (plugin->menu == NULL)
+     {
+       plugin->menu = gtk_menu_new ();
+-- 
+1.7.10.4
+

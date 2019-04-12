@@ -1,0 +1,51 @@
+From baf23e096da712084e54b47faa49c1ca99665b75 Mon Sep 17 00:00:00 2001
+From: Simon Steinbeiss <simon.steinbeiss@elfenbeinturm.at>
+Date: Wed, 17 Oct 2018 09:24:39 +0200
+Subject: Add support for xfce4-screensaver to xflock4
+
+While this can be overridden in the session's xfconf channel, we want to
+call xfce4-screensaver first.
+---
+ scripts/xflock4 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/xflock4 b/scripts/xflock4
+index 32770b4..fcca730 100644
+--- a/scripts/xflock4
++++ b/scripts/xflock4
+@@ -30,6 +30,7 @@ LOCK_CMD=$(xfconf-query -c xfce4-session -p /general/LockCommand)
+ # Lock by xscreensaver or gnome-screensaver, if a respective daemon is running
+ for lock_cmd in \
+     "$LOCK_CMD" \
++    "xfce4-screensaver-command -lock" \
+     "xscreensaver-command -lock" \
+     "gnome-screensaver-command --lock"
+ do
+-- 
+cgit v1.2.1
+
+From b863b3befc2734c277a22060af8bc3d891974f53 Mon Sep 17 00:00:00 2001
+From: Simon Steinbeiss <simon.steinbeiss@elfenbeinturm.at>
+Date: Wed, 28 Nov 2018 14:38:01 +0100
+Subject: Fix xfce4-screensaver command in xflock4
+
+---
+ scripts/xflock4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/xflock4 b/scripts/xflock4
+index fcca730..525e6e2 100644
+--- a/scripts/xflock4
++++ b/scripts/xflock4
+@@ -30,7 +30,7 @@ LOCK_CMD=$(xfconf-query -c xfce4-session -p /general/LockCommand)
+ # Lock by xscreensaver or gnome-screensaver, if a respective daemon is running
+ for lock_cmd in \
+     "$LOCK_CMD" \
+-    "xfce4-screensaver-command -lock" \
++    "xfce4-screensaver-command --lock" \
+     "xscreensaver-command -lock" \
+     "gnome-screensaver-command --lock"
+ do
+-- 
+cgit v1.2.1
+
